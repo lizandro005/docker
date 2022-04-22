@@ -1,0 +1,49 @@
+version: "3"
+
+networks:
+  net1:
+    ipam:
+      config:
+      - subnet: 172.30.0.0/16
+  net2:
+    ipam:
+      config:
+      - subnet: 172.40.0.0/16
+  net3:
+    ipam:
+      config:
+      - subnet: 172.50.0.0/16
+
+
+
+services:
+#container 1
+  api:
+    build: ./API
+    ports:
+      - 8000:80
+    container_name: API
+    networks:
+      - net1
+      - net2
+#container 2
+  db:
+    build: ./DB
+    ports:
+      - 8080:80
+    container_name: DB
+    networks:
+      - net2
+    environment:
+      - MYSQL_ROOT_PASSWORD=Passw0rd#
+#container 3
+  fq:
+    build: ./FQ
+    ports:
+      - 8888:80
+    container_name: FQ
+    networks:
+      - net3
+      - net2
+
+
